@@ -3,10 +3,26 @@ import axios from 'axios'
 import { Card, Form, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 
+const inputsCheck = ({ name, phone, email }) => {
+    let isValid = false
+    console.log({ name, phone, email })
+    const isEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email);
+    if (name.length === 0) alert("Name can't be blank")
+    else if (phone.toString().length !== 8) alert("Please check your phone number");
+    else if (!isEmail) alert("Please check your e-mail");
+    else isValid = true
+    return isValid
+};
+
 
 export default class EditContact extends Component {
     state = {
-        contact: {}
+        contact: {
+            id: "",
+            name: "",
+            phone: "",
+            email: ""
+        }
     }
 
     componentDidMount() {
@@ -16,6 +32,11 @@ export default class EditContact extends Component {
                     contact: res.data
                 })
             })
+    }
+
+    editContact = (e) => {
+        const { name, phone, email } = this.state.contact
+        inputsCheck(this.state.contact) ? axios.put(`http://localhost:4000/edit_contact/${this.props.match.params.id}`, { name, email, phone }) : e.preventDefault();
     }
 
     render() {
@@ -29,7 +50,7 @@ export default class EditContact extends Component {
                         <Form>
                             <Form.Group controlId="formBasicName">
                                 <Form.Label as="h5">Name</Form.Label>
-                                <Form.Control type="text" name="name" value={name} placeholder="i.e. Ali" onChange={(event) => this.setState({
+                                <Form.Control type="text" name="name" value={name} maxLength="30" placeholder="i.e. Ali" onChange={(event) => this.setState({
                                     contact: { ...this.state.contact, name: event.target.value }
                                 })} />
                             </Form.Group>
@@ -42,16 +63,14 @@ export default class EditContact extends Component {
 
                             <Form.Group controlId="formBasicEmail">
                                 <Form.Label as="h5">Email address</Form.Label>
-                                <Form.Control type="email" name="email" value={email} placeholder="i.e. ali@e-mail.com" onChange={(event) => this.setState({
+                                <Form.Control type="email" name="email" value={email} maxLength="30" placeholder="i.e. ali@e-mail.com" onChange={(event) => this.setState({
                                     contact: { ...this.state.contact, email: event.target.value }
                                 })} />
                             </Form.Group>
 
                         </Form>
                         <Link to="/">
-                            <Button onClick={() => {
-                                axios.put(`http://localhost:4000/edit_contact/${this.props.match.params.id}`, { name, email, phone })
-                            }} variant="success">
+                            <Button onClick={this.editContact} variant="success">
                                 Edit Contact
                             </Button>
                         </Link>

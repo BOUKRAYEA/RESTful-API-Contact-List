@@ -11,7 +11,7 @@ export default class ContactList extends Component {
     }
 
     componentDidMount() {
-        this.getContactList()
+        this.interval = setInterval(() => this.getContactList(), 500)
     }
 
     getContactList = () => {
@@ -20,6 +20,9 @@ export default class ContactList extends Component {
             .catch(err => console.error(err))
     }
 
+    componentWillUnmount() {
+        clearInterval(this.interval);
+    }
     render() {
         const { contactList } = this.state
         return (
@@ -42,9 +45,11 @@ export default class ContactList extends Component {
                                     <Link to={`/edit_contact/${contact._id}`}>
                                         <Button variant="warning">Edit</Button>
                                     </Link>
-                                    <Button variant="danger" onClick={() => (
-                                        axios.delete(`http://localhost:4000/delete_contact/${contact._id}`)
-                                    )}>
+                                    <Button
+                                        variant="danger"
+                                        onClick={() => (
+                                            axios.delete(`http://localhost:4000/delete_contact/${contact._id}`)
+                                        )}>
                                         Delete
                                     </Button>
                                 </ListGroupItem>

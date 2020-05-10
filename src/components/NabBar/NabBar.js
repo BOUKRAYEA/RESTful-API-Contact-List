@@ -5,7 +5,7 @@ class NabBar extends Component {
     render() {
         return (
             <Navbar className="bg-dark justify-content-between" variant="dark">
-                <Navbar.Brand href="#home">RESTful API</Navbar.Brand>
+                <Navbar.Brand href="/">RESTful API</Navbar.Brand>
                 <Nav>
                     <Link to="/">
                         <Navbar.Text style={{ marginRight: '10px' }}>Contact List</Navbar.Text>

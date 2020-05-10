@@ -3,6 +3,16 @@ import axios from 'axios'
 import { Card, Form, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 
+const inputsCheck = ({ name, phone, email }) => {
+    let isValid = false
+    const isEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email);
+    if (name.length === 0) alert("Name can't be blank")
+    else if (phone.length !== 8) alert("Please check your phone number");
+    else if (!isEmail) alert("Please check your e-mail");
+    else isValid = true
+    return isValid
+};
+
 export default class AddContact extends Component {
 
     state = {
@@ -18,8 +28,8 @@ export default class AddContact extends Component {
         })
     }
 
-    addContact = () => {
-        axios.post("http://localhost:4000/add_contact", this.state)
+    addContact = (e) => {
+        inputsCheck(this.state) ? axios.post("http://localhost:4000/add_contact", this.state) : e.preventDefault();
     }
 
     render() {
@@ -32,7 +42,7 @@ export default class AddContact extends Component {
                         <Form>
                             <Form.Group controlId="formBasicName">
                                 <Form.Label as="h5">Name</Form.Label>
-                                <Form.Control type="text" name="name" placeholder="i.e. Ali" onChange={this.handleChange} />
+                                <Form.Control type="text" name="name" maxLength="30" placeholder="i.e. Ali" onChange={this.handleChange} />
                             </Form.Group>
 
                             <Form.Group controlId="formBasicPhone">
@@ -42,7 +52,7 @@ export default class AddContact extends Component {
 
                             <Form.Group controlId="formBasicEmail">
                                 <Form.Label as="h5">Email address</Form.Label>
-                                <Form.Control type="email" name="email" placeholder="i.e. ali@e-mail.com" onChange={this.handleChange} />
+                                <Form.Control type="email" name="email" maxLength="30" placeholder="i.e. ali@e-mail.com" onChange={this.handleChange} />
                             </Form.Group>
 
                         </Form>
