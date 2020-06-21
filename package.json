@@ -9,9 +9,11 @@
     "axios": "^0.19.2",
     "body-parser": "^1.19.0",
     "bootstrap": "^4.4.1",
+    "concurrently": "^5.2.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "mongodb": "^3.5.7",
+    "nodemon": "^2.0.4",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.1",
     "react-dom": "^16.13.1",
@@ -23,7 +25,10 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "server": "nodemon server.js",
+    "client": "npm start ",
+    "dev": "concurrently \" npm run server\" \"npm run client\""
   },
   "eslintConfig": {
     "extends": "react-app"
